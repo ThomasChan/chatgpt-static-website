@@ -17,8 +17,8 @@ Deploy your own ChatGPT webpage to your domain or Github Pages, connect to OpenA
    ```
 
 ## Preview
-[light_mode](./light_mode.png)
-[dark_mode](./dark_mode.png)
+![light mode](./light_mode.png)
+![dark mode](./dark_mode.png)
 
 ## License
 
