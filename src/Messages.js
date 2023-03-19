@@ -9,11 +9,20 @@ import Interactive from './Interactive';
 export default function Messages() {
   // const [list, setList] = React.useState(mock);
   const [list, setList] = React.useState([]);
+  const scrollRef = React.useRef();
+
+  React.useLayoutEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [list]);
 
   return <div className='overflow-hidden w-full h-full relative'>
     <Theme />
     <main className='relative w-full transition-width flex flex-col overflow-hidden h-full items-stretch flex-1'>
-      <div className='flex flex-col items-center text-sm h-full dark:bg-[color:rgb(52,53,65)] overflow-auto'>
+      <div
+        ref={scrollRef}
+        className='flex flex-col items-center text-sm h-full dark:bg-[color:rgb(52,53,65)] overflow-auto'>
         {list.length
           ? null
           : <div className='text-[#d9d9d9] text-sm mt-[40vh] mx-[auto] text-center'>

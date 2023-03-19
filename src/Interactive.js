@@ -45,6 +45,7 @@ export default function Interactive({ setList }) {
     };
     setText('');
     setList(_list => {
+      _list = _list.slice();
       _list.push({
         question: text,
         answer: 'requesting...',
@@ -55,12 +56,14 @@ export default function Interactive({ setList }) {
       .then(res => {
         console.log(res);
         setList(_list => {
+          _list = _list.slice();
           _list[_list.length - 1].answer = htmlString(res.data.choices[0].message.content);
           return _list;
         });
       })
       .catch(err => {
         setList(_list => {
+          _list = _list.slice();
           _list[_list.length - 1].error = err.message;
           return _list;
         });
@@ -71,7 +74,10 @@ export default function Interactive({ setList }) {
     return abort;
   };
 
-  const onSend = () => {
+  const onSend = event => {
+    if (event?.preventDefault) {
+      event.preventDefault();
+    }
     _abort = doFetch();
   };
   const onStop = () => {
