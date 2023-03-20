@@ -1,6 +1,8 @@
 import React from 'react';
 import { Input } from 'antd';
 import axios from 'axios';
+import SendBtn from './SendBtn';
+import { AuthContext } from './Auth';
 import htmlString from './util/htmlString';
 
 const api = (process.env.REACT_APP_API || 'https://api.openai.com/v1/chat/completions').trim();
@@ -9,6 +11,10 @@ const apiKey = (process.env.REACT_APP_NOT_SAFE_API_KEY || '').trim();
 let _abort;
 
 export default function Interactive({ setList }) {
+  const {
+    auth,
+    password,
+  } = React.useContext(AuthContext);
   const [text, setText] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
@@ -32,6 +38,9 @@ export default function Interactive({ setList }) {
     };
     if (apiKey) {
       headers.Authorization = `Bearer ${apiKey}`;
+    }
+    if (auth) {
+      headers.password = password;
     }
     const options = {
       signal: abort.signal,
@@ -106,21 +115,11 @@ export default function Interactive({ setList }) {
           onChange={e => setText(e.target.value)}
           onPressEnter={onSend}
           placeholder={loading ? 'loading' : 'Ask GPT anything'} />
-        <StartIcon onSend={onSend} />
+        <SendBtn onSend={onSend} />
       </div>
     </div>
     <div className="text-xs text-black/50 dark:text-white/50 pt-2 pb-3 px-3 md:pt-3 md:pb-6 md:px-4 text-center">
       Developed using gpt-3.5-turbo API.
     </div>
   </div>;
-}
-
-function StartIcon({ onSend }) {
-  return <button
-    onClick={onSend}
-    className="absolute p-1 rounded-md text-gray-500 top-[50%] mt-[-12px] !w-[24px] !h-[24px] right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
-    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" className="w-4 h-4 rotate-90" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-    </svg>
-  </button>;
 }

@@ -21,6 +21,7 @@ pre * {
   font-family: -apple-system,Menlo,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 
+input::placeholder,
 textarea::placeholder {
   color: #e5e7eb !important;
 }
