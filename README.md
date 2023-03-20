@@ -16,6 +16,10 @@ Deploy your own ChatGPT webpage to your domain or Github Pages, connect to OpenA
     yarn run start
    ```
 
+## Backend Proxied API
+
+if you do not have backend develop expirences, recommand aircode.io
+
 ## Preview
 ![light mode](./light_mode.png)
 ![dark mode](./dark_mode.png)
