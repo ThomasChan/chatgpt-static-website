@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
 import axios from 'axios';
 import SendBtn from './SendBtn';
 import { AuthContext } from './Auth';
@@ -64,6 +64,7 @@ export default function Interactive({ setList }) {
     axios.post(api, options)
       .then(res => {
         console.log(res);
+        message.success(`Cost ${res.data.usage.total_token / 1000 * 0.002} dollar`);
         setList(_list => {
           _list = _list.slice();
           _list[_list.length - 1].answer = htmlString(res.data.choices[0].message.content);
