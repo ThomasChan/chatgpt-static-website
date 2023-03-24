@@ -64,7 +64,7 @@ export default function Interactive({ setList }) {
     axios.post(api, options)
       .then(res => {
         console.log(res);
-        message.success(`Cost ${res.data.usage.total_token / 1000 * 0.002} dollar`);
+        message.success(`Cost ${res.data.usage.total_tokens / 1000 * 0.002} dollar`);
         setList(_list => {
           _list = _list.slice();
           _list[_list.length - 1].createdAt = res.data.createdAt;
