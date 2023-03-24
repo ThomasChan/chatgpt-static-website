@@ -4,7 +4,7 @@ import { Input, message } from 'antd';
 import SendBtn from './SendBtn';
 
 const auth = (process.env.REACT_APP_AUTH_API || '').trim();
-const STATUS = {
+export const STATUS = {
   init: 'init',
   pending: 'pending',
   success: 'success',
@@ -13,6 +13,7 @@ const STATUS = {
 
 export const AuthContext = React.createContext({
   auth,
+  authStatus: STATUS.init,
   password: '',
 });
 
@@ -59,7 +60,7 @@ export default function Auth({ children }) {
       </div>
     }
   }
-  return <AuthContext.Provider value={{ auth, password }}>
+  return <AuthContext.Provider value={{ auth, password, authStatus: status }}>
     {children}
   </AuthContext.Provider>;
 }

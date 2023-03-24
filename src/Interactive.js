@@ -67,6 +67,7 @@ export default function Interactive({ setList }) {
         message.success(`Cost ${res.data.usage.total_token / 1000 * 0.002} dollar`);
         setList(_list => {
           _list = _list.slice();
+          _list[_list.length - 1].createdAt = res.data.createdAt;
           _list[_list.length - 1].answer = htmlString(res.data.choices[0].message.content);
           return _list;
         });

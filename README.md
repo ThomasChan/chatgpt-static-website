@@ -18,7 +18,13 @@ Deploy your own ChatGPT webpage to your domain or Github Pages, connect to OpenA
 
 ## Backend Proxied API
 
-if you do not have backend develop expirences, recommand aircode.io
+if you do not have backend develop expirences, recommand aircode.io, none of these are required
+
+- REACT_APP_AUTH_API: Attempt to authenticate when request your api.
+- REACT_APP_API: Attempt to proxied to https://api.openai.com/v1/chat/completions, since China mainland cannot send request to it.
+- REACT_APP_HISTORY_API: Attempt to retrieve your chat history, you need store your chat history inside REACT_APP_API.
+
+if you do not provide REACT_APP_API, you need provide `REACT_APP_NOT_SAFE_API_KEY`: OpenAI API KEY.
 
 ## Preview
 ![light mode](./light_mode.png)
