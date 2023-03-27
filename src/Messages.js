@@ -59,7 +59,7 @@ export default function Messages() {
             : <div className='text-[#d9d9d9] text-sm mt-[40vh] mx-[auto] text-center'>
               <GlobalOutlined className='block text-[#d9d9d9] text-[72px] mb-[15px]' />
               <p>Start exploring with your question</p>
-              {loadHistory ? <p className='text-black'>Retrieveing history {type}...</p> : null}
+              {loadHistory ? <p className='text-black dark:text-white'>Retrieveing history {type}...</p> : null}
             </div>}
           {list.map(type === Mode.Chat ? Chat : Img)}
           <div className="w-full h-48 flex-shrink-0"></div>

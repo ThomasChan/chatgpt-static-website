@@ -7,6 +7,7 @@ export default function Theme() {
       colorSchema.addEventListener('change', () => {
         document.documentElement.classList.toggle('dark', colorSchema.matches);
       });
+      document.documentElement.classList.toggle('dark', colorSchema.matches);
     }
     listenColorSchema();
   });
