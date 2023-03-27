@@ -1,16 +1,18 @@
 import React from 'react';
 import { Input, message } from 'antd';
 import axios from 'axios';
+import Mode from './Mode';
 import SendBtn from './SendBtn';
 import { AuthContext } from './Auth';
 import htmlString from './util/htmlString';
 
-const api = (process.env.REACT_APP_API || 'https://api.openai.com/v1/chat/completions').trim();
+const chatApi = (process.env.REACT_APP_API || 'https://api.openai.com/v1/chat/completions').trim();
+const imageApi = (process.env.REACT_APP_IMAGE_API || 'https://api.openai.com/v1/images/generations').trim();
 const apiKey = (process.env.REACT_APP_NOT_SAFE_API_KEY || '').trim();
 
 let _abort;
 
-export default function Interactive({ setList }) {
+export default function Interactive({ type, setList }) {
   const {
     auth,
     password,
@@ -42,33 +44,48 @@ export default function Interactive({ setList }) {
     if (auth) {
       headers.password = password;
     }
+    const isChat = type === Mode.Chat;
     const options = {
       signal: abort.signal,
       headers,
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: text }],
-        temperature: 0.6,
-        stream: false,
-      }),
+      body: isChat
+        ? JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [{ role: 'user', content: text }],
+          temperature: 0.6,
+          stream: false,
+        })
+        : JSON.stringify({
+          prompt: text,
+        }),
     };
     setText('');
     setList(_list => {
       _list = _list.slice();
-      _list.push({
-        question: text,
-        answer: 'requesting...',
-      });
+      _list.push(isChat
+        ? {
+          question: text,
+          answer: 'requesting...',
+        }
+        : {
+          prompt: text,
+        });
       return _list;
     });
-    axios.post(api, options)
+    axios.post(isChat ? chatApi : imageApi, options)
       .then(res => {
         console.log(res);
-        message.success(`Cost ${res.data.usage.total_tokens / 1000 * 0.002} dollar`);
+        if (isChat) {
+          message.success(`Cost ${res.data.usage.total_tokens / 1000 * 0.002} dollar`);
+        }
         setList(_list => {
           _list = _list.slice();
           _list[_list.length - 1].createdAt = res.data.createdAt;
-          _list[_list.length - 1].answer = htmlString(res.data.choices[0].message.content);
+          if (isChat) {
+            _list[_list.length - 1].answer = htmlString(res.data.choices[0].message.content);
+          } else {
+            _list[_list.length - 1].url = res.data.url;
+          }
           return _list;
         });
       })
@@ -116,7 +133,11 @@ export default function Interactive({ setList }) {
           value={text}
           onChange={e => setText(e.target.value)}
           onPressEnter={onSend}
-          placeholder={loading ? 'loading' : 'Ask GPT anything'} />
+          placeholder={loading
+            ? 'loading'
+            : type === Mode.Chat
+              ? 'Ask GPT anything'
+              : 'Ask GPT to generate a image'} />
         <SendBtn onSend={onSend} />
       </div>
     </div>

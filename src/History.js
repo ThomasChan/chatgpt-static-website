@@ -2,11 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import { AuthContext, STATUS } from './Auth';
+import Mode from './Mode';
 import htmlString from './util/htmlString';
 
 const historyApi = (process.env.REACT_APP_HISTORY_API || '').trim();
 
-export default function History({ from, toggleLoadHistory, onRetrieve, children }) {
+export default function History({ type, from, toggleLoadHistory, onRetrieve, children }) {
   const {
     authStatus,
     password,
@@ -20,6 +21,7 @@ export default function History({ from, toggleLoadHistory, onRetrieve, children 
       .post(historyApi, {
         headers: { password },
         params: {
+          type,
           from: from ? new Date(from).toISOString() : undefined,
         },
       })
@@ -30,11 +32,20 @@ export default function History({ from, toggleLoadHistory, onRetrieve, children 
         }
         onRetrieve(_list => {
           _list = _list.slice();
-          _list.unshift(...res.data.records.map(msg => ({
-            createdAt: msg.createdAt,
-            question: msg.question,
-            answer: htmlString(msg.choices[0].message.content),
-          })));
+          _list.unshift(...res.data.records.map(msg => {
+            if (type === Mode.Chat) {
+              return {
+                createdAt: msg.createdAt,
+                question: msg.question,
+                answer: htmlString(msg.choices[0].message.content),
+              };
+            }
+            return {
+              createdAt: msg.createdAt,
+              prompt: msg.prompt,
+              url: msg.url,
+            };
+          }));
           return _list;
         });
       })
@@ -48,7 +59,7 @@ export default function History({ from, toggleLoadHistory, onRetrieve, children 
     if (historyApi && authStatus === STATUS.success) {
       doFetch();
     }
-  }, [authStatus]);
+  }, [authStatus, type]);
 
   return <PullToRefresh
     isPullable={!noMore}
