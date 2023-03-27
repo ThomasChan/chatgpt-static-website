@@ -50,8 +50,13 @@ export default function History({ type, from, toggleLoadHistory, onRetrieve, chi
         });
       })
       .catch(error => {
-        toggleLoadHistory(false);
-        console.error(error);
+        if (error.code === 'ERR_NETWORK') {
+          // axios report PreflightMissingAllowOriginHeader
+          setTimeout(doFetch, 1000);
+        } else {
+          toggleLoadHistory(false);
+          console.error(error);
+        }
       });
   }
 
