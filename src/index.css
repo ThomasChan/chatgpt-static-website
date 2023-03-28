@@ -17,6 +17,15 @@ pre {
   line-height: 1.3;
   font-size: 14px;
 }
+ul {
+  list-style: circle;
+  padding-left: 20px;
+}
+
+ol {
+  list-style: auto;
+  padding-left: 20px;
+}
 
 pre * {
   font-family: -apple-system,Menlo,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;
@@ -105,4 +114,10 @@ html.dark .sun {
 }
 html.dark .moon {
   fill: white;
+}
+.markdown > * {
+  margin: 10px 0;
+}
+.markdown > *:first-child {
+  margin-top: 0;
 }

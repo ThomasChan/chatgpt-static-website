@@ -46,10 +46,10 @@ export default function Auth({ children }) {
   }, [auth]);
   if (auth && status !== STATUS.success) {
     if (status === STATUS.pending) {
-      return 'login...';
+      return <div className='fixed top-0 left-0 right-0 bottom-0 m-[auto] w-[fit-content] h-[fit-content]'>initializing...</div>;
     }
     if (status === STATUS.init || status === STATUS.error) {
-      return <div className='relative w-[250px] h-[34px] mx-[auto] mt-[30vh]'>
+      return <div className='fixed top-0 left-0 right-0 bottom-0 m-[auto] w-[250px] h-[32px]'>
         <Input
           placeholder='Enter Password'
           className='dark:border-gray-900/50 dark:text-white dark:bg-gray-700 dark:shadow-[0_0_15px_rgba(0,0,0,0.10)] rounded-none'
