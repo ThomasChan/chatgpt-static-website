@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { message } from 'antd';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import { AuthContext, STATUS } from './Auth';
 import Mode from './Mode';
@@ -37,6 +38,7 @@ export default function History({ type, from, toggleLoadHistory, onRetrieve, chi
               return {
                 createdAt: msg.createdAt,
                 question: msg.question,
+                collection: msg.collection,
                 answer: htmlString(msg.choices[0].message.content),
               };
             }
@@ -50,6 +52,7 @@ export default function History({ type, from, toggleLoadHistory, onRetrieve, chi
         });
       })
       .catch(error => {
+        message.error('加载历史对话失败');
         if (error.code === 'ERR_NETWORK') {
           // axios report PreflightMissingAllowOriginHeader
           setTimeout(doFetch, 1000);

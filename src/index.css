@@ -121,3 +121,7 @@ html.dark .moon {
 .markdown > *:first-child {
   margin-top: 0;
 }
+
+:where(.css-dev-only-do-not-override-ph9edi).ant-input-number .ant-input-number-input {
+  height: 35px;
+}

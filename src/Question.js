@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function Question({ createdAt, question }) {
+export default function Question({ createdAt, question, collection }) {
   const date = createdAt ? new Date(createdAt) : false;
   let history = null;
-  if (question.indexOf('_wrap_') >= 0) {
+  if (question?.indexOf('_wrap_') >= 0) {
     const prompts = question.split('_wrap_');
     question = prompts.pop();
     const _summary = prompts.shift();
@@ -26,6 +26,11 @@ export default function Question({ createdAt, question }) {
           {history}
           {question}
         </div>
+        {collection
+          ? <div className='text-[12px] text-gray-400'>
+            连续对话：{collection}
+          </div>
+          : null}
         {date
           ? <div className='text-[12px] text-gray-400'>
             {date.toLocaleDateString()}&nbsp;{date.toLocaleTimeString()}

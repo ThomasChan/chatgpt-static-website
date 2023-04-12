@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch } from 'antd';
 
 export default class Mode extends React.PureComponent {
 
@@ -13,11 +14,14 @@ export default class Mode extends React.PureComponent {
   }
 
   render() {
-    return <button
-      onClick={this.onToggle}
-      className="fixed top-16 right-4 z-10 text-black dark:text-gray-200">
-      {`${this.props.type.toUpperCase()} Mode`}
-    </button>;
+    return <div>
+      <Switch
+        checked={this.props.type === Mode.Chat}
+        onClick={this.onToggle} />
+      <div className="text-black dark:text-gray-200">
+        {this.props.type}
+      </div>
+    </div>;
   }
 
 }

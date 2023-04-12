@@ -42,9 +42,6 @@ export default function Messages() {
 
   return <div className='overflow-hidden w-full h-full relative dark:bg-[color:rgb(52,53,65)]'>
     <Theme />
-    <Mode
-      type={type}
-      onToggle={onTypeChange} />
     <Auth>
       <History
         type={type}
@@ -67,14 +64,17 @@ export default function Messages() {
       </History>
       <Interactive
         type={type}
+        onTypeChange={onTypeChange}
+        list={list}
         setList={setList} />
     </Auth>
   </div>;
 }
 
-function Chat({ createdAt, question, answer, error }) {
+function Chat({ createdAt, question, answer, error, collection }) {
   return <React.Fragment key={createdAt}>
     <Question
+      collection={collection}
       createdAt={createdAt}
       question={question} />
     <Answer answer={answer} error={error} />
