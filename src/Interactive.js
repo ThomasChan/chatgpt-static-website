@@ -5,6 +5,7 @@ import Mode from './Mode';
 import SendBtn from './SendBtn';
 import { AuthContext } from './Auth';
 import htmlString from './util/htmlString';
+import { getVoices, getVoice, setVoice } from './util/tts';
 
 const chatApi = (process.env.REACT_APP_API || 'https://api.openai.com/v1/chat/completions').trim();
 const imageApi = (process.env.REACT_APP_IMAGE_API || 'https://api.openai.com/v1/images/generations').trim();
@@ -23,6 +24,11 @@ export default function Interactive({ type, onTypeChange, list, setList }) {
   const [enableChat, toggleChat] = React.useState(false);
   const [collections, setCollections] = React.useState([]);
   const [continous, onContinousChange] = React.useState('');
+  const [currentVoice, setCurrentVoice] = React.useState(getVoice());
+  const onVoiceChange = v => {
+    setCurrentVoice(v);
+    setVoice(v);
+  }
 
   const onToggleSetting = () => toggleSetting(bool => !bool);
 
@@ -229,6 +235,19 @@ export default function Interactive({ type, onTypeChange, list, setList }) {
                 onChange={e => onContinousChange(e.target.value)} />
             </div>
           </div>
+        </div>
+        <div className="mt-2">
+          <div className="mb-1 text-xs">Select Voice</div>
+          <Select
+            className="w-full"
+            onChange={onVoiceChange}
+            value={currentVoice}>
+            {getVoices().map(voice => <Select.Option
+              key={voice.name}
+              value={voice.name}>
+              {voice.name} -- {voice.lang}
+            </Select.Option>)}
+          </Select>
         </div>
       </div>
       : null}
